@@ -1,0 +1,43 @@
+{% include "header.html" %}
+<style>
+  body {
+    background-color: gray;
+  }
+</style>
+<title>Menu-Time - Home</title>
+<!-- Page Header-->
+      <header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
+          <div class="container position-relative px-4 px-lg-5">
+              <div class="row gx-4 gx-lg-5 justify-content-center">
+                  <div class="col-md-10 col-lg-8 col-xl-7">
+                      <div class="site-heading">
+                          <h2>Welcome to Menu-Time!</h2>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </header>
+
+
+
+<hr class="my-4">
+
+<div class="jumbotron text-center">
+    <div class="container">
+  <h3 class="display-4">Prep for your meal prep</h3>
+  <p class="lead">Need help planning your week ahead? This app will prepare you a random list of meals, ingredients and shopping list</p>
+  <hr class="my-4">
+  <p>Check out a list of the meals we currently have available.</p>
+  <a class="btn btn-warning btn-lg" href="/meals" role="button">Show Me!</a>
+  <hr class="my-4">
+  <p>Check out this weeks prepared menu.</p>
+  <a class="btn btn-warning btn-lg" href="/standard" role="button">Show Me!</a>
+  <hr class="my-4">
+  <p>Want to build a custom menu? Be sure to sign up or sign in</p>
+  <a class="btn btn-warning btn-lg" href="/customdetails" role="button">Tell Me More!</a>
+
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,89 @@
+{% include "header.html" %}
+
+
+<!-- Page Header-->
+<title>Menu-Time - Build a Menu</title>
+<body>
+  <header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
+      <div class="container position-relative px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+                  <div class="site-heading">
+                      <h2>Build a Menu Below</h2>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </header>
+
+  <hr class="my-4">
+
+  <div class="jumbotron text-center">
+      <div class="container">
+    <h1 class="display-4">Menu-Time Custom Menu</h1>
+    <p class="lead">Need help planning your week ahead? This app will prepare you a random list of meals, ingredients and shopping list</p>
+    <hr class="my-4">
+          <h3>To generate your own custom menu select desired meal types below:</h3><body>
+          <form method="POST">
+              <label for="fish_meals">Fish Meals</label>
+              <select name="fish_meals" id="fish_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select><br>
+              <label for="chicken_meals">Chicken Meals</label>
+              <select name="chicken_meals" id="chicken_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+              </select><br>
+              <label for="beef_meals">Beef Meals (Coming Soon)</label>
+              <select name="beef_meals" id="beef_meals">
+                <option value="0">0</option>
+              </select><br>
+              <label for="salad_meals">Salad Meals</label>
+              <select name="salad_meals" id="salad_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select><br>
+              <label for="taco_meals">Taco Meals</label>
+              <select name="taco_meals" id="taco_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select><br>
+              <label for="pasta_meals">Pasta Meals</label>
+              <select name="pasta_meals" id="pasta_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select><br>
+              <label for="vegetarian_meals">Vegetarian Meals</label>
+              <select name="vegetarian_meals" id="vegetarian_meals">
+                <option value="0">0</option>
+                <option value="1">1</option>
+              </select><br>
+              <label for="servings">How many servings per meal would you like:</label>
+              <select name="servings" id="servings">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select><br>
+              <button class="btn btn-warning btn-lg" type="submit">Select Meal Types</button>
+          </form>
+
+      </div>
+    </div>
+  </div>
+</body>

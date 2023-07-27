@@ -1,0 +1,47 @@
+{% include "header.html" %}
+<style>
+  body {
+    background-color: gray;
+  }
+</style>
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
+  <div class="container position-relative px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+              <div class="site-heading">
+                  <h2>All Meals</h2>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <h1>All Meals</h1>
+
+	  <table class="table">
+
+        <ul>
+            {% for item in meal_stack: %}
+            <li>Meal Name: {{item.name}}<br>
+                Meal ID: {{item.id}}<br>
+                Recipe Category: {{item.category}}<br>
+                Meal Link: <a href="{{item.link}}" target="_blank">URL</a><br>
+                Meal Ingredients: {{item.ingredients}}<br>
+                {% if current_user.id == 1 %}
+                <div class="clearfix">
+               <a class="btn btn-primary float-right" href="{{ url_for('meal.edit', id=item.id)}}">Edit Meal</a></li>
+               </div>
+               {% endif %}
+                <br>
+            {%endfor%}
+        </ul>
+        <p><a href="{{ url_for('core.index') }}">Return to homepage</a></p>
+  
+    </div>
+  </div>
+</div>
