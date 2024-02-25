@@ -25,3 +25,4 @@ google-oauth2-tool==0.0.3
 google-cloud-storage==2.9.0
 google-cloud-secret-manager==2.16.1
 pyopenssl==23.2.0
+Werkzeug==2.2.2
