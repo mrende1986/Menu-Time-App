@@ -1,7 +1,3 @@
-## Works locally but not on Cloud Run
-## As of 6/19/23
-## From Source: https://github.com/vastevenson/flask-google-hosted-authn-demo/blob/main/main.py
-
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session, abort
 import os
 import pathlib
@@ -27,6 +23,7 @@ users = Blueprint('users',__name__)
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
+
 # GOOGLE_PROJECT_ID = os.environ.get("GOOGLE_PROJECT_ID", None)
 GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
@@ -58,6 +55,7 @@ def get_google_provider_cfg():
 
 @users.route("/login")
 def login():
+    session.permanent = True
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
@@ -69,11 +67,9 @@ def login():
         redirect_uri=request.base_url + "/callback",
         scope=["openid", "email", "profile"],
         )
-    print(f"REDIRECT_URI: {request.base_url}")
     return redirect(request_uri)
 
 
-# os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for local dev
 
 @users.route("/login/callback")
 def callback():
@@ -86,13 +82,19 @@ def callback():
     token_endpoint = google_provider_cfg["token_endpoint"]
 
     # Prepare and send a request to get tokens! Yay tokens!
-    print(f"REQUEST.URL: {request.url}")
+    temp_var_url = request.url
+    if "http:" in temp_var_url:
+        temp_var_url = "https:" + temp_var_url[5:]
+    # temp_var_base_url = request.base_url
+    # if "http:" in temp_var_base_url:
+    #     temp_var_base_url = "https:" + temp_var_base_url[5:]
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
-        authorization_response=request.url,
+        authorization_response=temp_var_url,
         redirect_url=request.base_url,
         code=code,
     )
+    
     token_response = requests.post(
         token_url,
         headers=headers,
@@ -129,7 +131,7 @@ def callback():
     # by Google
     user = User(
         id=unique_id, username=users_name, email=users_email, profile_image=picture
-    )
+)
 
     # Doesn't exist? Add it to the database.
     if not User.get(user_id=unique_id):
