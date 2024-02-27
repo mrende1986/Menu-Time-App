@@ -1,0 +1,32 @@
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1531592937781-344ad608fabf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>Register</h1>
+            <span class="subheading">Sign up to unlock custom menus!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+       <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.email.label}}{{form.email}}<br>
+        {{form.username.label}}{{form.username}}<br>
+        {{form.password.label}}{{form.password}}<br>
+        {{form.pass_confirm.label}}{{form.pass_confirm}}<br>
+        {{form.submit()}}
+       </form>
+      </div>
+    </div>
+  </div>
+
