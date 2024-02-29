@@ -7,7 +7,7 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 
 from werkzeug.security import generate_password_hash,check_password_hash
-from menutime import db
+from menutime import db, login_manager
 from menutime.models import User, Comment
 from menutime.users.forms import RegistrationForm,LoginForm,UpdateUserForm
 from menutime.users.picture_handler import add_profile_pic
@@ -28,6 +28,11 @@ GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
 GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+# Flask-Login helper to retrieve a user from our db
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 # register
 @users.route("/register", methods=['GET','POST'])
