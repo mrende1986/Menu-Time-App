@@ -8,8 +8,7 @@ from flask_mail import Mail
 from datetime import timedelta
 
 app = Flask(__name__)
-SECRET_KEY = os.urandom(32)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", None)
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 ##################################
 ##### DATABASE SETUP #############

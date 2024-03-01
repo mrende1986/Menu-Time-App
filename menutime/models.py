@@ -12,7 +12,6 @@ from menutime import db
 def load_user(user_id):
     return User.query.get(user_id)
 
-
 class User(db.Model, UserMixin):
     __tablename__ = "user"
 
@@ -36,22 +35,22 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def get(user_id):
-        
         # POSTGRESQL
         # user = db.engine.execute('SELECT * FROM user WHERE id=(%s);' , (user_id))
-
         # USE THIS FOR SQLITE
-        user = db.engine.execute(
-            "SELECT * FROM user WHERE id = ?", (user_id,)
-        ).fetchone()
+        user = db.engine.execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
 
         if not user:
             return None
 
-        user = User(
-            id=user[0], username=user[1], email=user[2], profile_image=user[3]
-        )
+        user = User(id=user[0], username=user[1], email=user[2], profile_image=user[3])
         return user
+    
+    # def get_id(self):
+    #     try:
+    #         return self.username
+    #     except AttributeError:
+    #         raise NotImplementedError('No `id` attribute - override `get_id`')
 
 
     @staticmethod
