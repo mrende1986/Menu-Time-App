@@ -48,7 +48,7 @@ def menu():
         desired_servings = []
         return render_template('menu.html', meals=meals_dict, shopping_list=shopping_list)
     
-    except NameError:
+    except (NameError, IndexError):
         try: 
             find_user = Selections.query.filter_by(user_id=current_user.id).order_by(Selections.created_date.desc()).first()
             this_weeks_ids_2 = find_user.meal_ids_returned

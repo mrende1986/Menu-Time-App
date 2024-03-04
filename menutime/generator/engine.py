@@ -54,11 +54,7 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
         meal_ids_returned = this_weeks_ids
         )
     db.session.add(new_meal_list)
-    print(desired_servings)
-    print("New list added")
     db.session.commit()
-
-
     return this_weeks_ids
 
 def populate_shopping_list(this_weeks_ids, desired_servings):
