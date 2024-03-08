@@ -16,3 +16,8 @@ def get_all_meals():
 def get_all_users():
     users = db.session.query(User).all()
     return jsonify(users=[user.to_dict() for user in users])
+
+@api.route("/all_selections")
+def get_all_selections():
+    selections = db.session.query(Selections).all()
+    return jsonify(selections=[selection.to_dict() for selection in selections])

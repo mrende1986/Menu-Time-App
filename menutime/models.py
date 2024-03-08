@@ -111,8 +111,11 @@ class Selections(db.Model):
         self.meal_portions = meal_portions
         self.meal_ids_returned = meal_ids_returned
 
-    # def __repr__(self):
-    #     return f"Meal {self.name} -- Date: {self.created_date}"
+    def __repr__(self):
+        return f"Selection {self.name} -- Date: {self.created_date}"
+    
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 class Comment(db.Model):
     __tablename__ = "comments"
