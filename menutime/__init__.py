@@ -13,13 +13,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 ##################################
 ##### DATABASE SETUP #############
 ##################################
-# file_path = os.path.abspath(os.getcwd())+"\database.db"
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+file_path
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
