@@ -30,8 +30,9 @@ def meals():
     return render_template('meals.html', meal_stack=all_meals)
 
 @meal.route("/edit", methods=["GET", "POST"])
-@admin_only
+# @admin_only
 def edit():
+    
     if request.method == "POST":
         meal_id = request.form["id"]
         meal_to_update = Meal_Details.query.get(meal_id)
