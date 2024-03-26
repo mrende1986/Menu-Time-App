@@ -69,3 +69,27 @@ def show_post(meal_id):
         db.session.commit()
 
     return render_template("meal.html", meal=requested_meal, form=comment_form, current_user=current_user)
+
+
+# CREATE
+@meal.route('/create',methods=['GET','POST'])
+def create_meal():
+
+    if request.method == "POST":
+
+        # global category_selected, desired_servings
+        new_meal = []
+        new_meal.append(request.form["name"])
+        new_meal.append(request.form["category"])
+        new_meal.append(request.form["ingredients"])
+        new_meal.append(request.form["description"])
+        new_meal.append(request.form["link"])
+        new_meal.append(request.form["servings"])
+        new_meal.append(request.form["image_url"])
+
+        db.session.add(new_meal)
+        db.session.commit()
+        flash('New Meal Created')
+        return redirect(url_for('core.index'))
+
+    return render_template('create_meal.html')

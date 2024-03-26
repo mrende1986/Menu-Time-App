@@ -1,0 +1,52 @@
+{% include "header.html" %}
+
+
+<!-- Page Header-->
+<title>Menu-Time - Add a Recipe</title>
+<body>
+  <header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
+      <div class="container position-relative px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+                  <div class="site-heading">
+                      <h2>Have a recipe others might like? Add it below</h2>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </header>
+
+  <hr class="my-4">
+
+  <div class="jumbotron text-center">
+      <div class="container">
+      <hr class="my-4">
+          <body>
+          <form method="POST">
+
+              <label for="name">name</label>
+              <input type="text" name="name" id="name">
+              </select><br>
+              <label for="category">Category</label>
+              <input type="text" name="category" id="category"><br>
+              <label for="ingredients">ingredients</label>
+              <textarea name="ingredients" id="ingredients" rows="4" cols="50"></textarea><br>
+              <label for="description">description</label>
+              <label for="description">Description</label>
+              <textarea name="description" id="description" rows="4" cols="50"></textarea><br>
+              <label for="link">link</label>
+              <input type="text" name="link" id="link"><br>
+              <label for="servings">Servings</label>
+              <select name="servings" id="servings">
+                <option value="0">0</option>
+                <option value="1">1</option>
+              </select><br>
+              <label for="image_url">image_url</label>
+              <input type="text" name="image_url" id="image_url"><br>
+              <button class="btn btn-warning btn-lg" type="submit">Submit Meal</button>
+          </form>
+
+      </div>
+    </div>
+  </div>
+</body>
