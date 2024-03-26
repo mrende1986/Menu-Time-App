@@ -1,5 +1,6 @@
 zz_var.py
 zz_meals.py
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
