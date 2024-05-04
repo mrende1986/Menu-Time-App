@@ -6,6 +6,7 @@ from flask_login import LoginManager
 # import psycopg2
 from flask_mail import Mail
 from datetime import timedelta
+import pymongo
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", None)
@@ -13,12 +14,18 @@ app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 ##################################
 ##### DATABASE SETUP #############
 ##################################
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# basedir = os.path.abspath(os.path.dirname(__file__))
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
+# Migrate(app,db)
 
-db = SQLAlchemy(app)
-Migrate(app,db)
+##################################
+###### MongoDB SETUP #############
+##################################
+conn = os.environ.get("MONGODB_CONN", None)
+client = pymongo.MongoClient(conn, serverSelectionTimeoutMS=5000)
+db = client.db
 
 ##################################
 ##### LOGIN CONFIGS ##############

@@ -35,6 +35,7 @@ def menu():
 
     try:
         user_id = current_user.id
+        print(f"user_id: {user_id}")
         this_weeks_ids = meal_selector(category_selected, desired_servings, user_id)
         shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(this_weeks_ids, desired_servings)
         meals_dict = {
@@ -50,9 +51,11 @@ def menu():
     
     except (NameError, IndexError):
         try: 
-            find_user = Selections.query.filter_by(user_id=current_user.id).order_by(Selections.created_date.desc()).first()
-            this_weeks_ids_2 = find_user.meal_ids_returned
-            desired_servings_2 = find_user.meal_portions
+            find_user = db.todos_flask.find_one({'user_id': user_id}, sort=[("date_created", -1)])
+            this_weeks_ids_2 = find_user['meal_ids_returned']
+            print(f"this_weeks_ids_2: {this_weeks_ids_2}")
+            desired_servings_2 = find_user['meal_portions']
+            print(f"desired_servings_2: {desired_servings_2}")
             shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(this_weeks_ids_2, desired_servings_2)
         
             meals_dict = {
@@ -75,7 +78,7 @@ def standard():
     # need to set this to randomize weekly
     # Probably just need a function to save to selections table
     # From here choose the designated row from selections table
-    standard_ids = [13,24,21]
+    standard_ids = [1,2]
     desired_servings = 2
     shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(standard_ids, desired_servings)
     

@@ -39,8 +39,9 @@ def register():
                     username=form.username.data,
                     password=form.password.data)
 
-        db.session.add(user)
-        db.session.commit()
+        # db.session.add(user)
+        # db.session.commit()
+        db.todos_flask.insert_one(user)
 
         email_new_registration(form.email.data)
         flash('Thanks for registration!')
@@ -129,9 +130,7 @@ def callback():
 
     # Create a user in your db with the information provided
     # by Google
-    user = User(
-        id=unique_id, username=users_name, email=users_email, profile_image=picture
-)
+    user = User(id=unique_id, username=users_name, email=users_email, profile_image=picture)
 
     # Doesn't exist? Add it to the database.
     if not User.get(user_id=unique_id):
