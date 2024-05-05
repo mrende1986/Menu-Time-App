@@ -1,6 +1,6 @@
 from menutime import db,login_manager
-import sqlite3
-from sqlalchemy.sql import func
+# import sqlite3
+# from sqlalchemy.sql import func
 from flask_login import UserMixin
 from datetime import datetime
 from menutime import db

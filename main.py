@@ -1,7 +1,7 @@
 from menutime import app
 import os
-from menutime import db
-from menutime.models import Meal_Details
+# from menutime import db
+# from menutime.models import Meal_Details
 
 
 if __name__ == "__main__":

@@ -1,12 +1,13 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_migrate import Migrate
 import os
 from flask_login import LoginManager
 # import psycopg2
 from flask_mail import Mail
 from datetime import timedelta
 import pymongo
+from pymongo import MongoClient
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", None)

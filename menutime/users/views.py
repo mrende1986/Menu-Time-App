@@ -1,9 +1,9 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session, abort
 import os
-import pathlib
+# import pathlib
 import json
 from flask_login import login_user, current_user, logout_user, login_required
-from oauthlib.oauth2 import WebApplicationClient
+from oauthlib.oauth2 import WebApplicationClient 
 import requests
 
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -13,11 +13,11 @@ from menutime.users.forms import RegistrationForm,LoginForm,UpdateUserForm
 from menutime.users.picture_handler import add_profile_pic
 from menutime.email.email import email_new_registration
 
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-import google_auth_oauthlib.flow
-import google.auth.transport.requests
-from pip._vendor import cachecontrol
+# from google.oauth2 import id_token
+# from google_auth_oauthlib.flow import Flow
+# import google_auth_oauthlib.flow
+# import google.auth.transport.requests
+# from pip._vendor import cachecontrol
 
 users = Blueprint('users',__name__)
 
