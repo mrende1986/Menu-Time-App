@@ -56,7 +56,7 @@ class User(UserMixin):
         db.users.insert_one(user)
 
 class Meal_Details:
-    collection = db["meal_details"]
+    # collection = db["meal_details"]
     
     def __init__(self, id, name, category, ingredients, description, link, servings, image_url, created_date=datetime.utcnow()):
         self.id = id
@@ -100,7 +100,7 @@ class Meal_Details:
         }
 
 class Selections:
-    collection = db["selections"]
+    # collection = db["selections"]
 
     def __init__(self, user_id, meal_selections, meal_portions, meal_ids_returned, created_date=datetime.utcnow()):
         self.user_id = user_id
@@ -132,7 +132,7 @@ class Selections:
         }
 
 class Comment:
-    collection = db["comments"]
+    # collection = db["comments"]
 
     def __init__(self, text, user_id, meal_id, created_date=datetime.utcnow()):
         self.text = text

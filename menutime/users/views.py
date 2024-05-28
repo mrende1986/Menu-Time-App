@@ -29,7 +29,7 @@ GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configur
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-# register
+# register disabled 5/28/24
 @users.route("/register", methods=['GET','POST'])
 def register():
     form = RegistrationForm()
@@ -142,13 +142,13 @@ def callback():
     # Send user back to homepage
     return redirect(url_for("core.index"))
 
-# logout
+# logout disabled 5/28/24
 @users.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("core.index"))
 
-# Account
+# Account disabled 5/28/24
 @users.route("/account", methods=["GET","POST"])
 @login_required
 def account():
@@ -163,7 +163,7 @@ def account():
 
         current_user.username = form.username.data
         current_user.email = form.email.data
-        db.session.commit()
+        # db.session.commit()
         flash('User Account Update!')
         return redirect(url_for('users.account'))
 
@@ -174,9 +174,9 @@ def account():
     profile_image = url_for('static', filename='profile_pics/' + current_user.profile_image)
     return render_template('account.html',profile_image=profile_image,form=form)
 
-@users.route("/<username>")
-def user_posts(username):
-    page = request.args.get('page',1,type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    comments = Comment.query.filter_by(user_id=user.id).order_by(Comment.created_date.desc()).paginate(page=page,per_page=5)
-    return render_template('user_comments.html',comments=comments,user=user)
+# @users.route("/<username>")
+# def user_posts(username):
+#     page = request.args.get('page',1,type=int)
+#     user = User.query.filter_by(username=username).first_or_404()
+#     comments = Comment.query.filter_by(user_id=user.id).order_by(Comment.created_date.desc()).paginate(page=page,per_page=5)
+#     return render_template('user_comments.html',comments=comments,user=user)

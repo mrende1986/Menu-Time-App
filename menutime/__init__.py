@@ -6,8 +6,9 @@ from flask_login import LoginManager
 # import psycopg2
 from flask_mail import Mail
 from datetime import timedelta
-import pymongo
-from pymongo import MongoClient
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", None)
@@ -24,9 +25,17 @@ app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 ##################################
 ###### MongoDB SETUP #############
 ##################################
-conn = os.environ.get("MONGODB_CONN", None)
-client = pymongo.MongoClient(conn, serverSelectionTimeoutMS=5000)
-db = client.db
+# import pymongo
+# conn = os.environ.get("MONGODB_CONN", None)
+# client = pymongo.MongoClient(conn, serverSelectionTimeoutMS=5000)
+# db = client.db
+
+##################################
+###### Firebase SETUP ############
+##################################
+cred = credentials.Certificate('plan-your-grub-firebase-adminsdk-o3ucn-1d07e93951.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 ##################################
 ##### LOGIN CONFIGS ##############
