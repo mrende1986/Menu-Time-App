@@ -24,7 +24,7 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     # for i in db.session.query(Meal_Details.id).distinct():
     # for temp_meal in db.todos_flask.find({'category': {'$exists': True}}):
         # temp_meal = db.session.query(Meal_Details).get(i['id'])
-    meal_query = db.collection("menutime")
+    meal_query = db.collection("meals")
     meals = [doc.to_dict() for doc in meal_query.stream()]
     for temp_meal in meals:
         if temp_meal['category'] == 'fish':
@@ -79,7 +79,7 @@ def populate_shopping_list(this_weeks_ids, desired_servings):
     menu_image_url = []
 
     for id in this_weeks_ids:
-        query = db.collection('menutime').where(filter=FieldFilter('id', '==', id))
+        query = db.collection('meals').where(filter=FieldFilter('id', '==', id))
         menu_obj = [doc.to_dict() for doc in query.stream()]
         menu_meal_names.append(menu_obj[0]['name'])
         menu_ingredients.append(menu_obj[0]['ingredients'])

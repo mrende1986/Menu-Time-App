@@ -60,7 +60,7 @@ def menu():
 
             this_weeks_ids_2 = find_user[0]['meal_ids_returned']
             print(f"this_weeks_ids_2: {this_weeks_ids_2}")
-            desired_servings_2 = find_user['meal_portions']
+            desired_servings_2 = find_user[0]['meal_portions']
             print(f"desired_servings_2: {desired_servings_2}")
             shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(this_weeks_ids_2, desired_servings_2)
         

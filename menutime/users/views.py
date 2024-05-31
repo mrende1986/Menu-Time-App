@@ -29,7 +29,7 @@ GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configur
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-# register disabled 5/28/24
+
 @users.route("/register", methods=['GET','POST'])
 def register():
     form = RegistrationForm()
@@ -142,7 +142,7 @@ def callback():
     # Send user back to homepage
     return redirect(url_for("core.index"))
 
-# logout disabled 5/28/24
+
 @users.route("/logout")
 def logout():
     logout_user()

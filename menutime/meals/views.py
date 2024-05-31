@@ -27,7 +27,7 @@ def admin_only(f):
 @meal.route('/meals')
 def meals():
     ## Firebase ##
-    meals = db.collection('menutime') 
+    meals = db.collection('meals') 
     all_meals = [doc.to_dict() for doc in meals.stream()]
     return render_template('meals.html', meal_stack=all_meals)
     
