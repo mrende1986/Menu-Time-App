@@ -4,15 +4,17 @@ from menutime import db,login_manager
 from flask_login import UserMixin
 from datetime import datetime
 from menutime import db
+from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
 
 # flask db migrate -m "migration note"
 # flask db upgrade
 
 @login_manager.user_loader
 def load_user(user_id):
-    user = db.users.find_one({"id": user_id})
+    user_query = db.collection("users").where(filter=FieldFilter('id', '==', user_id))
+    user = [doc.to_dict() for doc in user_query.stream()]
     if user:
-        return User(id=user['id'], username=user['username'], email=user['email'], profile_image=user['profile_image'])
+        return User(id=user[0]['id'], username=user[0]['username'], email=user[0]['email'], profile_image=user[0]['profile_image'])
     return None
 
 class User(UserMixin):
@@ -39,10 +41,12 @@ class User(UserMixin):
 
     @staticmethod
     def get(user_id):
-        user = db.users.find_one({"id": user_id})
+        # user = db.users.find_one({"id": user_id})
+        user_query = db.collection("users").where(filter=FieldFilter('id', '==', user_id))
+        user = [doc.to_dict() for doc in user_query.stream()]
         if not user:
             return None
-        return User(id=user['id'], username=user['username'], email=user['email'], profile_image=user['profile_image'])
+        return User(id=user[0]['id'], username=user[0]['username'], email=user[0]['email'], profile_image=user[0]['profile_image'])
 
     @staticmethod
     def create(id, username, email, profile_image='default_profile.png'):
@@ -53,7 +57,8 @@ class User(UserMixin):
             "profile_image": profile_image,
             "created_date": datetime.utcnow()
         }
-        db.users.insert_one(user)
+        # db.users.insert_one(user)
+        db.collection("users").add(user)
 
 class Meal_Details:
     # collection = db["meal_details"]

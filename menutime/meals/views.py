@@ -26,10 +26,6 @@ def admin_only(f):
 
 @meal.route('/meals')
 def meals():
-
-    ## MongodDB ##
-    # all_meals = db.todos_flask.find({'category': {'$exists': True}})
-    # return render_template('meals.html', meal_stack=all_meals)
     ## Firebase ##
     meals = db.collection('menutime') 
     all_meals = [doc.to_dict() for doc in meals.stream()]

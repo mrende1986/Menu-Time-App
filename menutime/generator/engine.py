@@ -2,6 +2,8 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 import random
 from menutime import db
 from menutime.models import Meal_Details, Selections
+from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
+from datetime import datetime
 
 def meal_selector(user_desired_meals, desired_servings, user_id):
     fish_meals_desired = user_desired_meals[0]
@@ -20,8 +22,11 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     vegetarian_ids = []
     this_weeks_ids = []
     # for i in db.session.query(Meal_Details.id).distinct():
-    for temp_meal in db.todos_flask.find({'category': {'$exists': True}}):
+    # for temp_meal in db.todos_flask.find({'category': {'$exists': True}}):
         # temp_meal = db.session.query(Meal_Details).get(i['id'])
+    meal_query = db.collection("menutime")
+    meals = [doc.to_dict() for doc in meal_query.stream()]
+    for temp_meal in meals:
         if temp_meal['category'] == 'fish':
             fish_ids.append(temp_meal['id'])
         elif temp_meal['category'] == 'chicken':
@@ -54,11 +59,12 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     #     meal_portions = desired_servings,
     #     meal_ids_returned = this_weeks_ids
     #     )
-    db.todos_flask.insert_one({
+    db.collection("selections").add({
                     "user_id": user_id,
                     "meal_selections": user_desired_meals,
                     "meal_portions": desired_servings,
-                    "meal_ids_returned": this_weeks_ids
+                    "meal_ids_returned": this_weeks_ids,
+                    "created_date": datetime.utcnow()
                                })
     # db.session.commit()
     return this_weeks_ids
@@ -73,14 +79,14 @@ def populate_shopping_list(this_weeks_ids, desired_servings):
     menu_image_url = []
 
     for id in this_weeks_ids:
-        # menu_obj = db.session.query(Meal_Details).get(id)
-        menu_obj = db.todos_flask.find_one({'id': (id)})
-        menu_meal_names.append(menu_obj['name'])
-        menu_ingredients.append(menu_obj['ingredients'])
-        menu_description.append(menu_obj['description'])
-        menu_link.append(menu_obj['link'])
-        menu_servings.append(menu_obj['servings']) 
-        menu_image_url.append(menu_obj['image_url'])
+        query = db.collection('menutime').where(filter=FieldFilter('id', '==', id))
+        menu_obj = [doc.to_dict() for doc in query.stream()]
+        menu_meal_names.append(menu_obj[0]['name'])
+        menu_ingredients.append(menu_obj[0]['ingredients'])
+        menu_description.append(menu_obj[0]['description'])
+        menu_link.append(menu_obj[0]['link'])
+        menu_servings.append(menu_obj[0]['servings']) 
+        menu_image_url.append(menu_obj[0]['image_url'])
 
     temp_list = {}
     for (meal, serving) in zip(menu_ingredients, menu_servings):
