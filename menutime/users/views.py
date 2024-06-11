@@ -1,23 +1,17 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session, abort
 import os
-import pathlib
 import json
 from flask_login import login_user, current_user, logout_user, login_required
-from oauthlib.oauth2 import WebApplicationClient
+from oauthlib.oauth2 import WebApplicationClient 
 import requests
 
-from werkzeug.security import generate_password_hash,check_password_hash
 from menutime import db, login_manager
 from menutime.models import User, Comment
 from menutime.users.forms import RegistrationForm,LoginForm,UpdateUserForm
 from menutime.users.picture_handler import add_profile_pic
 from menutime.email.email import email_new_registration
 
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-import google_auth_oauthlib.flow
-import google.auth.transport.requests
-from pip._vendor import cachecontrol
+# from werkzeug.security import generate_password_hash,check_password_hash
 
 users = Blueprint('users',__name__)
 
@@ -29,7 +23,7 @@ GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configur
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-# register
+
 @users.route("/register", methods=['GET','POST'])
 def register():
     form = RegistrationForm()
@@ -39,8 +33,9 @@ def register():
                     username=form.username.data,
                     password=form.password.data)
 
-        db.session.add(user)
-        db.session.commit()
+        # db.session.add(user)
+        # db.session.commit()
+        db.todos_flask.insert_one(user)
 
         email_new_registration(form.email.data)
         flash('Thanks for registration!')
@@ -129,9 +124,7 @@ def callback():
 
     # Create a user in your db with the information provided
     # by Google
-    user = User(
-        id=unique_id, username=users_name, email=users_email, profile_image=picture
-)
+    user = User(id=unique_id, username=users_name, email=users_email, profile_image=picture)
 
     # Doesn't exist? Add it to the database.
     if not User.get(user_id=unique_id):
@@ -143,13 +136,13 @@ def callback():
     # Send user back to homepage
     return redirect(url_for("core.index"))
 
-# logout
+
 @users.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("core.index"))
 
-# Account
+# Account disabled 5/28/24
 @users.route("/account", methods=["GET","POST"])
 @login_required
 def account():
@@ -164,7 +157,7 @@ def account():
 
         current_user.username = form.username.data
         current_user.email = form.email.data
-        db.session.commit()
+        # db.session.commit()
         flash('User Account Update!')
         return redirect(url_for('users.account'))
 
@@ -175,9 +168,9 @@ def account():
     profile_image = url_for('static', filename='profile_pics/' + current_user.profile_image)
     return render_template('account.html',profile_image=profile_image,form=form)
 
-@users.route("/<username>")
-def user_posts(username):
-    page = request.args.get('page',1,type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    comments = Comment.query.filter_by(user_id=user.id).order_by(Comment.created_date.desc()).paginate(page=page,per_page=5)
-    return render_template('user_comments.html',comments=comments,user=user)
+# @users.route("/<username>")
+# def user_posts(username):
+#     page = request.args.get('page',1,type=int)
+#     user = User.query.filter_by(username=username).first_or_404()
+#     comments = Comment.query.filter_by(user_id=user.id).order_by(Comment.created_date.desc()).paginate(page=page,per_page=5)
+#     return render_template('user_comments.html',comments=comments,user=user)

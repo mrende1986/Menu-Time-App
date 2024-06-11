@@ -1,85 +1,69 @@
 from menutime import db,login_manager
-import sqlite3
-from sqlalchemy.sql import func
+# import sqlite3
+# from sqlalchemy.sql import func
 from flask_login import UserMixin
 from datetime import datetime
 from menutime import db
+from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
 
 # flask db migrate -m "migration note"
 # flask db upgrade
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    user_query = db.collection("users").where(filter=FieldFilter('id', '==', user_id))
+    user = [doc.to_dict() for doc in user_query.stream()]
+    if user:
+        return User(id=user[0]['id'], username=user[0]['username'], email=user[0]['email'], profile_image=user[0]['profile_image'])
+    return None
 
-class User(db.Model, UserMixin):
-    __tablename__ = "user"
+class User(UserMixin):
+    __collection__ = "user"
 
-    id = db.Column(db.BigInteger, unique=True, primary_key=True)
-    username = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(64), nullable=False)
-    profile_image = db.Column(db.String(20),nullable=False, default='default_profile.png')
-    created_date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-    
-    def __init__(self,id,username,email,profile_image):
+    def __init__(self, id, username, email, profile_image='default_profile.png', created_date=datetime.utcnow()):
         self.id = id
         self.username = username
         self.email = email
         self.profile_image = profile_image
+        self.created_date = created_date
 
     def __repr__(self):
         return f"Username {self.username}"
         
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "profile_image": self.profile_image,
+            "created_date": self.created_date
+        }
 
     @staticmethod
     def get(user_id):
-        # POSTGRESQL
-        # user = db.engine.execute('SELECT * FROM user WHERE id=(%s);' , (user_id))
-        # USE THIS FOR SQLITE
-        user = db.engine.execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
-
+        # user = db.users.find_one({"id": user_id})
+        user_query = db.collection("users").where(filter=FieldFilter('id', '==', user_id))
+        user = [doc.to_dict() for doc in user_query.stream()]
         if not user:
             return None
-
-        user = User(id=user[0], username=user[1], email=user[2], profile_image=user[3])
-        return user
-    
-    # def get_id(self):
-    #     try:
-    #         return self.username
-    #     except AttributeError:
-    #         raise NotImplementedError('No `id` attribute - override `get_id`')
-
+        return User(id=user[0]['id'], username=user[0]['username'], email=user[0]['email'], profile_image=user[0]['profile_image'])
 
     @staticmethod
-    def create(id, username, email, profile_image):
-        # db = db()
-        user = User(id=id, username=username, email=email, profile_image=profile_image)
-        db.session.add(user)
-        db.session.commit()
-        # db.engine.execute(
-        #     "INSERT INTO user (id, username, email, profile_image)"
-        #     " VALUES (?, ?, ?, ?)",
-        #     (id, username, email, profile_image),
-        # )
-        # db.commit()
+    def create(id, username, email, profile_image='default_profile.png'):
+        user = {
+            "id": id,
+            "username": username,
+            "email": email,
+            "profile_image": profile_image,
+            "created_date": datetime.utcnow()
+        }
+        # db.users.insert_one(user)
+        db.collection("users").add(user)
 
-class Meal_Details(db.Model,UserMixin):
-    __tablename__ = "meal_details"
+class Meal_Details:
+    # collection = db["meal_details"]
     
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), unique=True, nullable=False)
-    category = db.Column(db.String(250), nullable=False)
-    ingredients = db.Column(db.JSON, nullable=False)
-    description = db.Column(db.String(750), nullable=False)
-    link = db.Column(db.String(700), nullable=False)
-    servings = db.Column(db.Integer, nullable=False)
-    image_url = db.Column(db.String(700), nullable=False)
-    created_date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-
-    def __init__(self,id,name,category,ingredients,description,link,servings,image_url):
+    def __init__(self, id, name, category, ingredients, description, link, servings, image_url, created_date=datetime.utcnow()):
         self.id = id
         self.name = name
         self.category = category
@@ -88,49 +72,87 @@ class Meal_Details(db.Model,UserMixin):
         self.link = link
         self.servings = servings
         self.image_url = image_url
+        self.created_date = created_date
 
     def __repr__(self):
         return f"Meal {self.name} -- Date: {self.created_date}"
 
+    def save(self):
+        document = {
+            "_id": self.id,
+            "name": self.name,
+            "category": self.category,
+            "ingredients": self.ingredients,
+            "description": self.description,
+            "link": self.link,
+            "servings": self.servings,
+            "image_url": self.image_url,
+            "created_date": self.created_date
+        }
+        self.collection.insert_one(document)
+
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "category": self.category,
+            "ingredients": self.ingredients,
+            "description": self.description,
+            "link": self.link,
+            "servings": self.servings,
+            "image_url": self.image_url,
+            "created_date": self.created_date
+        }
 
-class Selections(db.Model):
-    __tablename__ = "selections"
+class Selections:
+    # collection = db["selections"]
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    meal_selections = db.Column(db.JSON, nullable=False)
-    meal_portions = db.Column(db.Integer, nullable=False)
-    meal_ids_returned = db.Column(db.JSON, nullable=True)
-    created_date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-
-    def __init__(self,user_id,meal_selections,meal_portions,meal_ids_returned):
+    def __init__(self, user_id, meal_selections, meal_portions, meal_ids_returned, created_date=datetime.utcnow()):
         self.user_id = user_id
         self.meal_selections = meal_selections
         self.meal_portions = meal_portions
         self.meal_ids_returned = meal_ids_returned
+        self.created_date = created_date
 
     def __repr__(self):
-        return f"Selection {self.name} -- Date: {self.created_date}"
-    
+        return f"Selection for user {self.user_id} -- Date: {self.created_date}"
+
+    def save(self):
+        document = {
+            "user_id": self.user_id,
+            "meal_selections": self.meal_selections,
+            "meal_portions": self.meal_portions,
+            "meal_ids_returned": self.meal_ids_returned,
+            "created_date": self.created_date
+        }
+        self.collection.insert_one(document)
+
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        return {
+            "user_id": self.user_id,
+            "meal_selections": self.meal_selections,
+            "meal_portions": self.meal_portions,
+            "meal_ids_returned": self.meal_ids_returned,
+            "created_date": self.created_date
+        }
 
-class Comment(db.Model):
-    __tablename__ = "comments"
+class Comment:
+    # collection = db["comments"]
 
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    meal_id = db.Column(db.Integer, db.ForeignKey("meal_details.id"))
-    created_date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-
-    def __init__(self,text, user_id, meal_id, created_date):
+    def __init__(self, text, user_id, meal_id, created_date=datetime.utcnow()):
         self.text = text
         self.user_id = user_id
         self.meal_id = meal_id
         self.created_date = created_date
+
+    def save(self):
+        document = {
+            "text": self.text,
+            "user_id": self.user_id,
+            "meal_id": self.meal_id,
+            "created_date": self.created_date
+        }
+        self.collection.insert_one(document)
 
     def __repr__(self):
         return f"Text {self.text} -- Date: {self.created_date}"

@@ -2,6 +2,8 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 import random
 from menutime import db
 from menutime.models import Meal_Details, Selections
+from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
+from datetime import datetime
 
 def meal_selector(user_desired_meals, desired_servings, user_id):
     fish_meals_desired = user_desired_meals[0]
@@ -19,22 +21,26 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     pasta_ids = []
     vegetarian_ids = []
     this_weeks_ids = []
-    for i in db.session.query(Meal_Details.id).distinct():
-        temp_meal = db.session.query(Meal_Details).get(i)
-        if temp_meal.category == 'fish':
-            fish_ids.append(i[0])
-        elif temp_meal.category == 'chicken':
-            chicken_ids.append(i[0])
-        elif temp_meal.category == 'beef':
-            beef_ids.append(i[0])
-        elif temp_meal.category == 'salad':
-            salad_ids.append(i[0])
-        elif temp_meal.category == 'taco':
-            taco_ids.append(i[0])
-        elif temp_meal.category == 'pasta':
-            pasta_ids.append(i[0])
-        elif temp_meal.category == 'vegetarian':
-            vegetarian_ids.append(i[0])
+    # for i in db.session.query(Meal_Details.id).distinct():
+    # for temp_meal in db.todos_flask.find({'category': {'$exists': True}}):
+        # temp_meal = db.session.query(Meal_Details).get(i['id'])
+    meal_query = db.collection("meals")
+    meals = [doc.to_dict() for doc in meal_query.stream()]
+    for temp_meal in meals:
+        if temp_meal['category'] == 'fish':
+            fish_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'chicken':
+            chicken_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'beef':
+            beef_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'salad':
+            salad_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'taco':
+            taco_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'pasta':
+            pasta_ids.append(temp_meal['id'])
+        elif temp_meal['category'] == 'vegetarian':
+            vegetarian_ids.append(temp_meal['id'])
         else:
             pass
     
@@ -47,14 +53,14 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     vegetarian_meal_id = random.sample(vegetarian_ids, vegetarian_meals_desired)
 
     this_weeks_ids = fish_meal_id + chicken_meal_id + beef_meal_id + salad_meal_id + taco_meal_id + pasta_meal_id + vegetarian_meal_id
-    new_meal_list = Selections(
-        user_id = user_id,
-        meal_selections = user_desired_meals,
-        meal_portions = desired_servings,
-        meal_ids_returned = this_weeks_ids
-        )
-    db.session.add(new_meal_list)
-    db.session.commit()
+    db.collection("selections").add({
+                    "user_id": user_id,
+                    "meal_selections": user_desired_meals,
+                    "meal_portions": desired_servings,
+                    "meal_ids_returned": this_weeks_ids,
+                    "created_date": datetime.utcnow()
+                               })
+
     return this_weeks_ids
 
 def populate_shopping_list(this_weeks_ids, desired_servings):
@@ -67,13 +73,14 @@ def populate_shopping_list(this_weeks_ids, desired_servings):
     menu_image_url = []
 
     for id in this_weeks_ids:
-        menu_obj = db.session.query(Meal_Details).get(id)
-        menu_meal_names.append(menu_obj.name)
-        menu_ingredients.append(menu_obj.ingredients)
-        menu_description.append(menu_obj.description)
-        menu_link.append(menu_obj.link)
-        menu_servings.append(menu_obj.servings) 
-        menu_image_url.append(menu_obj.image_url)
+        query = db.collection('meals').where(filter=FieldFilter('id', '==', id))
+        menu_obj = [doc.to_dict() for doc in query.stream()]
+        menu_meal_names.append(menu_obj[0]['name'])
+        menu_ingredients.append(menu_obj[0]['ingredients'])
+        menu_description.append(menu_obj[0]['description'])
+        menu_link.append(menu_obj[0]['link'])
+        menu_servings.append(menu_obj[0]['servings']) 
+        menu_image_url.append(menu_obj[0]['image_url'])
 
     temp_list = {}
     for (meal, serving) in zip(menu_ingredients, menu_servings):
