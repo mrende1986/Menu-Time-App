@@ -1,34 +1,27 @@
 from flask import Flask
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
 import os
 from flask_login import LoginManager
-# import psycopg2
 from flask_mail import Mail
 from datetime import timedelta
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import credentials, firestore
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", None)
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
+
+
 ##################################
 ##### DATABASE SETUP #############
 ##################################
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_migrate import Migrate
+
 # basedir = os.path.abspath(os.path.dirname(__file__))
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # db = SQLAlchemy(app)
 # Migrate(app,db)
-
-##################################
-###### MongoDB SETUP #############
-##################################
-# import pymongo
-# conn = os.environ.get("MONGODB_CONN", None)
-# client = pymongo.MongoClient(conn, serverSelectionTimeoutMS=5000)
-# db = client.db
 
 ##################################
 ###### Firebase SETUP ############

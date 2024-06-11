@@ -53,12 +53,6 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     vegetarian_meal_id = random.sample(vegetarian_ids, vegetarian_meals_desired)
 
     this_weeks_ids = fish_meal_id + chicken_meal_id + beef_meal_id + salad_meal_id + taco_meal_id + pasta_meal_id + vegetarian_meal_id
-    # new_meal_list = Selections(
-    #     user_id = user_id,
-    #     meal_selections = user_desired_meals,
-    #     meal_portions = desired_servings,
-    #     meal_ids_returned = this_weeks_ids
-    #     )
     db.collection("selections").add({
                     "user_id": user_id,
                     "meal_selections": user_desired_meals,
@@ -66,7 +60,7 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
                     "meal_ids_returned": this_weeks_ids,
                     "created_date": datetime.utcnow()
                                })
-    # db.session.commit()
+
     return this_weeks_ids
 
 def populate_shopping_list(this_weeks_ids, desired_servings):
