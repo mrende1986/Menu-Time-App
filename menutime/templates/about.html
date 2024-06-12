@@ -27,9 +27,15 @@
 
         <ul>
 
-            <li>Number of Meals Available: {{num_meals}}<br>
+            <li>Number of Menus Created: {{num_menus}}<br>
                 <br>
         </ul>
+        <ul>
+
+          <li>Number of Meals Available: {{num_meals}}<br>
+              <br>
+      </ul>
+      <img src="data:image/png;base64, {{ image }}">
         <p><a href="{{ url_for('core.index') }}">Return to homepage</a></p>
   
     </div>
