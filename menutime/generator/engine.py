@@ -1,8 +1,6 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
 import random
 from menutime import db
-from menutime.models import Meal_Details, Selections
-from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
+from google.cloud.firestore_v1.base_query import FieldFilter
 from datetime import datetime
 
 def meal_selector(user_desired_meals, desired_servings, user_id):
@@ -21,9 +19,8 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     pasta_ids = []
     vegetarian_ids = []
     this_weeks_ids = []
-    # for i in db.session.query(Meal_Details.id).distinct():
-    # for temp_meal in db.todos_flask.find({'category': {'$exists': True}}):
-        # temp_meal = db.session.query(Meal_Details).get(i['id'])
+
+
     meal_query = db.collection("meals")
     meals = [doc.to_dict() for doc in meal_query.stream()]
     for temp_meal in meals:
@@ -109,16 +106,14 @@ def populate_shopping_list(this_weeks_ids, desired_servings):
     dressing_list = {}
     frozen_list = {}
     other_list = {}
-    proteins = ['Chicken Cutlets','Ground Beef', 'Shrimp', 'Salmon']
-    produce = ['Eggplant','Avocado', 'Cilantro', 'Parsley', 'Lemon','Lime', 'Cucumber', 'Carrots', 'Garlic','Onion','Red Onion','Romaine','Tomatoes','Celery','Jalapeno','Cherry Tomatoes','Red Bell Pepper','Mango','Orange Bell Pepper','Pineapple Slices','Grape Tomatoes','Green Onions','Strawberries','Mixed Greens','Shredded Cabbage', 'Spinach','Basil', 'Green Bell Pepper']
-    refrigerator = ['Egg','Feta Cheese','Butter','Sharp Cheddar Cheese','Greek Yogurt','Heavy Cream', 'Parmesan Cheese', 'Mexican Cheese','Mozzarella Cheese']
-    dry_goods = ['Bow tie pasta','Breadcrumbs','Green Olives','Orzo','Brown Rice','Chili Garilc Sauce','Soy Sauce','Sweet Corn (can)','Black Beans (can)','Corn Chips (small bag)','Minced Garlic','Quinoa','Chickpeas (can(s))','Kalamata Olives','Chopped Pecans','Almonds','Sesame Seeds','Ground Ginger','Corn Tortillas', 'Nacho Doritos', 'Taco Seasoning']
-    dressing = ['Marinara Sauce','Pesto','Balsamic Vinegar','Avocado Oil','White Wine Vinegar','Rice Vinegar','Low Sodium Soy Sauce','Toasted Sesame Oil','Olive Oil','Sesame Oil','Franks Red Hot Saunce',
-    'Vegetable Broth','White wine vinegar','Mayonnaise','Sriracha','Honey', 'Chili Garlic Sauce','Rice Wine Vinegar','BBQ Sauce','Ranch Dressing','Maple Syrup','Apple Cider Vinegar','Canola Oil']
-    frozen = ['Naan']
-    spices = ['Granulated Sugar','Salt','Seasame Seeds','Dark Chili Powder','Smoked Paprika','Red Pepper Flakes','Oregano','Garlic Powder','Pepper','Cumin','Chili Powder','Coriander','Cayenne Pepper']
-    other = []
-    ingredient_list_types = [proteins, produce, refrigerator, dry_goods, dressing, frozen, spices, other]
+    proteins = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('proteins', "!=", "")).stream()][0]['proteins']
+    produce = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('produce', "!=", "")).stream()][0]['produce']
+    refrigerator = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('refrigerator', "!=", "")).stream()][0]['refrigerator']
+    dry_goods = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('dry_goods', "!=", "")).stream()][0]['dry_goods']
+    dressing = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('dressing', "!=", "")).stream()][0]['dressing']
+    spices = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('spices', "!=", "")).stream()][0]['spices']
+    other = [result.to_dict() for result in db.collection("ingredients").where(filter=FieldFilter('other', "!=", "")).stream()][0]['other']
+    ingredient_list_types = [proteins, produce, refrigerator, dry_goods, dressing, spices, other]
     brokenout_lists = [protein_list, produce_list, refrigerator_list, dry_goods_list, dressing_list, frozen_list, spices_list, other_list]
     brokenout_lists_str = ['protein_list', 'produce_list', 'refrigerator_list', 'dry_goods_list', 'dressing_list', 'frozen_list', 'spices_list', 'other_list']
 
@@ -132,7 +127,7 @@ def populate_shopping_list(this_weeks_ids, desired_servings):
             if temp_ingred in ingredient_list:
                 breakout_list[temp_ingred] = i
 
-        if temp_ingred not in proteins + produce + refrigerator + dry_goods + dressing + frozen + spices:
+        if temp_ingred not in proteins + produce + refrigerator + dry_goods + dressing + spices:
             other_list[temp_ingred] = i
 
 

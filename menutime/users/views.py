@@ -24,27 +24,26 @@ GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configur
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 
-@users.route("/register", methods=['GET','POST'])
-def register():
-    form = RegistrationForm()
+# @users.route("/register", methods=['GET','POST'])
+# def register():
+#     form = RegistrationForm()
 
-    if form.validate_on_submit():
-        user = User(email=form.email.data,
-                    username=form.username.data,
-                    password=form.password.data)
+#     if form.validate_on_submit():
+#         user = User(email=form.email.data,
+#                     username=form.username.data,
+#                     password=form.password.data)
 
-        # db.session.add(user)
-        # db.session.commit()
-        db.todos_flask.insert_one(user)
 
-        email_new_registration(form.email.data)
-        flash('Thanks for registration!')
-        login_user(user)
-        return redirect(url_for('generator.selections'))
+#         db.todos_flask.insert_one(user)
 
-    return render_template('register.html',form=form)
+#         email_new_registration(form.email.data)
+#         flash('Thanks for registration!')
+#         login_user(user)
+#         return redirect(url_for('generator.selections'))
 
-# Login
+#     return render_template('register.html',form=form)
+
+
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 

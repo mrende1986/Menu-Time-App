@@ -1,20 +1,17 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, abort
+from flask import render_template, url_for, redirect, request, Blueprint
 from flask_login import login_required, current_user
 from menutime import db
 from menutime.generator.engine import meal_selector, populate_shopping_list
-from menutime.models import Meal_Details, Selections
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
+import os
 
 generator = Blueprint('generator',__name__)
-
-
 
 @generator.route("/selections", methods=["GET", "POST"])
 @login_required
 def selections():
     if request.method == "POST":
-        # global this_weeks_ids
         global category_selected, desired_servings
         category_selected = []
         category_selected.append(int(request.form["fish_meals"]))
@@ -22,7 +19,6 @@ def selections():
         category_selected.append(int(request.form["beef_meals"]))
         category_selected.append(int(request.form["salad_meals"]))
         category_selected.append(int(request.form["taco_meals"]))
-        category_selected.append(int(request.form["pasta_meals"]))
         category_selected.append(int(request.form["vegetarian_meals"]))
         desired_servings = int(request.form["servings"])
         
@@ -37,7 +33,6 @@ def menu():
 
     try:
         user_id = current_user.id
-        print(f"generator views.py line 38")
         this_weeks_ids = meal_selector(category_selected, desired_servings, user_id)
         shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(this_weeks_ids, desired_servings)
         meals_dict = {
@@ -53,15 +48,11 @@ def menu():
     
     except (NameError, IndexError):
         try: 
-            # find_user = db.todos_flask.find_one({'user_id': user_id}, sort=[("date_created", -1)])
-            print('Line 57')
+
             find_user = db.collection("selections").where(filter=FieldFilter('user_id', '==', user_id)).order_by("created_date", direction=firestore.Query.DESCENDING).limit(1)
             find_user = [doc.to_dict() for doc in find_user.stream()]
-
             this_weeks_ids_2 = find_user[0]['meal_ids_returned']
-            print(f"this_weeks_ids_2: {this_weeks_ids_2}")
             desired_servings_2 = find_user[0]['meal_portions']
-            print(f"desired_servings_2: {desired_servings_2}")
             shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(this_weeks_ids_2, desired_servings_2)
         
             meals_dict = {
@@ -80,13 +71,13 @@ def menu():
 
 @generator.route('/standard')
 def standard():
-    
-    # need to set this to randomize weekly
-    # Probably just need a function to save to selections table
-    # From here choose the designated row from selections table
-    standard_ids = [3,4]
-    desired_servings = 2
-    shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(standard_ids, desired_servings)
+
+    standard_user_id = os.environ.get("USER_1", None)
+    find_user = db.collection("selections").where(filter=FieldFilter('user_id', '==', standard_user_id)).order_by("created_date", direction=firestore.Query.DESCENDING).limit(1)
+    find_user = [doc.to_dict() for doc in find_user.stream()]
+    standard_ids = find_user[0]['meal_ids_returned']
+    standard_servings = find_user[0]['meal_portions']
+    shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(standard_ids, standard_servings)
     
     meals_dict = {
         'id' : standard_ids,
