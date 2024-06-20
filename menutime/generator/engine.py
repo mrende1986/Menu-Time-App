@@ -9,14 +9,13 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     beef_meals_desired = user_desired_meals[2]
     salad_meals_desired = user_desired_meals[3]
     taco_meals_desired = user_desired_meals[4]
-    pasta_meals_desired = user_desired_meals[5]
-    vegetarian_meals_desired = user_desired_meals[6]
+    vegetarian_meals_desired = user_desired_meals[5]
     fish_ids = []
     chicken_ids = []
     beef_ids = []
     salad_ids = []
     taco_ids = []
-    pasta_ids = []
+    # pasta_ids = []
     vegetarian_ids = []
     this_weeks_ids = []
 
@@ -34,8 +33,6 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
             salad_ids.append(temp_meal['id'])
         elif temp_meal['category'] == 'taco':
             taco_ids.append(temp_meal['id'])
-        elif temp_meal['category'] == 'pasta':
-            pasta_ids.append(temp_meal['id'])
         elif temp_meal['category'] == 'vegetarian':
             vegetarian_ids.append(temp_meal['id'])
         else:
@@ -46,10 +43,9 @@ def meal_selector(user_desired_meals, desired_servings, user_id):
     beef_meal_id = random.sample(beef_ids, beef_meals_desired)
     salad_meal_id = random.sample(salad_ids, salad_meals_desired)
     taco_meal_id = random.sample(taco_ids, taco_meals_desired)
-    pasta_meal_id = random.sample(pasta_ids, pasta_meals_desired)
     vegetarian_meal_id = random.sample(vegetarian_ids, vegetarian_meals_desired)
 
-    this_weeks_ids = fish_meal_id + chicken_meal_id + beef_meal_id + salad_meal_id + taco_meal_id + pasta_meal_id + vegetarian_meal_id
+    this_weeks_ids = fish_meal_id + chicken_meal_id + beef_meal_id + salad_meal_id + taco_meal_id + vegetarian_meal_id
     db.collection("selections").add({
                     "user_id": user_id,
                     "meal_selections": user_desired_meals,
