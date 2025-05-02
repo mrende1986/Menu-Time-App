@@ -1,47 +1,141 @@
-{% include "header.html" %}
-<style>
-  body {
-    background-color: gray;
-  }
-</style>
-<!-- Page Header-->
-<header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
-  <div class="container position-relative px-4 px-lg-5">
-      <div class="row gx-4 gx-lg-5 justify-content-center">
-          <div class="col-md-10 col-lg-8 col-xl-7">
-              <div class="site-heading">
-                  <h2>Number of Meals Available</h2>
-              </div>
-          </div>
-      </div>
-  </div>
-</header>
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Menu Time</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets_new/css/main.css" />
+	</head>
+	<body class="is-preload">
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-      <h1>All Meals</h1>
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
 
-	  <table class="table">
+							<!-- Header -->
+								{% include 'header_new.html' %}
 
-        <ul>
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>About</h2>
+									</header>
+									<div class="features">
+										<article>
+											<span class="icon fa-gem"></span>
+											<div class="content">
+												<h3>Number of Menus Created:</h3>
+												<p>{{num_menus}}</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-paper-plane"></span>
+											<div class="content">
+												<h3>Number of Meals Available:</h3>
+												<p>{{num_meals}}</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-rocket"></span>
+											<div class="content">
+												<img src="data:image/png;base64, {{ meals_available }}">
+											</div>
+										</article>
+                    <br>
+										<article>
+											<span class="icon solid fa-signal"></span>
+											<div class="content">
+												<img src="data:image/png;base64, {{ most_pop_img }}">
+											</div>
+										</article>
+                    <br>
+										<article>
+											<span class="icon solid fa-signal"></span>
+											<div class="content">
+												<img src="data:image/png;base64, {{ types_img }}">
+											</div>
+										</article>
+									</div>
+								</section>
 
-            <li>Number of Menus Created: {{num_menus}}<br>
-                <br>
-        </ul>
-        <ul>
+							<!-- Section -->
+								<!-- <section>
+									<header class="major">
+										<h2>Ipsum sed dolor</h2>
+									</header>
+									<div class="posts">
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic01.jpg" alt="" /></a>
+											<h3>Interdum aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic02.jpg" alt="" /></a>
+											<h3>Nulla amet dolore</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic03.jpg" alt="" /></a>
+											<h3>Tempus ullamcorper</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic04.jpg" alt="" /></a>
+											<h3>Sed etiam facilis</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic05.jpg" alt="" /></a>
+											<h3>Feugiat lorem aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic06.jpg" alt="" /></a>
+											<h3>Amet varius aliquam</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+									</div>
+								</section>-->
 
-          <li>Number of Meals Available: {{num_meals}}<br>
-              <br>
-      </ul>
-      <img src="data:image/png;base64, {{ meals_available }}"><br>
-      <br>
-      <img src="data:image/png;base64, {{ most_pop_img }}"><br>
-      <br>
-      <img src="data:image/png;base64, {{ types_img }}"><br>
-        <p><a href="{{ url_for('core.index') }}">Return to homepage</a></p>
-  
-    </div>
-  </div>
-</div>
+						</div>
+					</div> 
+
+				<!-- Sidebar -->
+              {% include 'menu_bar.html' %}
+
+
+		<!-- Scripts -->
+			<script src="static/assets_new/js/jquery.min.js"></script>
+			<script src="static/assets_new/js/browser.min.js"></script>
+			<script src="static/assets_new/js/breakpoints.min.js"></script>
+			<script src="static/assets_new/js/util.js"></script>
+			<script src="static/assets_new/js/main.js"></script>
+
+	</body>
+</html>

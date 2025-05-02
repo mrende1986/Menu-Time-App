@@ -52,12 +52,14 @@ mail = Mail(app)
 ######### BLUEPRINT ##############
 ##################################
 from menutime.core.views import core
+from menutime.mr.views import mr
 from menutime.users.views import users
 from menutime.error_pages.handlers import error_pages
 from menutime.generator.views import generator
 from menutime.meals.views import meal
 from menutime.api.views import api
 app.register_blueprint(core)
+app.register_blueprint(mr)
 app.register_blueprint(users)
 app.register_blueprint(error_pages)
 app.register_blueprint(generator)

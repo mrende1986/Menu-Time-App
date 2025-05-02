@@ -1,54 +1,95 @@
-{% import "bootstrap/wtf.html" as wtf %}
-{% include "header.html" %}
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>MatthewRende.com</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/static/assets_new/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								{% include 'header_new.html' %}
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h1>{{meal.name}}</h1>
+											<p><a href="{{meal.link}}" target="_blank">{{meal.link}}</a></p>
+										</header>
+										<p style="font-size: larger">{{meal.description}}</p>
+									</div>
+									<span class="image object">
+										<img src="{{meal.image_url}}" alt="" />
+									</span>
+								</section>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Required Ingredients</h2>
+									</header>
+									<div class="features">
+										<article>
+											<span class="icon fa-gem"></span>
+											<div class="content">
+												<h3>Produce:</h3>
+												<p><input type='checkbox'>{{ shopping_list.produce_list | replace(", ", "<br><input type='checkbox'>") | safe }}</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-paper-plane"></span>
+											<div class="content">
+												<h3>Refrigerator/Protein:</h3>
+												<p><input type='checkbox'>{{shopping_list.protein_list | replace(", ", "<br><input type='checkbox'>") | safe }}
+                                                    <input type='checkbox'>{{shopping_list.refrigerator_list | replace(", ", "<br><input type='checkbox'>") | safe }}</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-rocket"></span>
+											<div class="content">
+												<h3>Packaged Goods:</h3>
+												<p><input type='checkbox'>{{shopping_list.dressing_list | replace(", ", "<br><input type='checkbox'>") | safe }}
+                                                    <input type='checkbox'>{{shopping_list.dry_goods_list | replace(", ", "<br><input type='checkbox'>") | safe }}
+                                                    <input type='checkbox'>{{shopping_list.spices_list | replace(", ", "<br><input type='checkbox'>") | safe }}</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-signal"></span>
+											<div class="content">
+												<h3>Other:</h3>
+												<p><input type='checkbox'>{{shopping_list.other_list | replace(", ", "<br><input type='checkbox'>") | safe }}</p>
+											</div>
+										</article>
+									</div>
+								</section>
 
 
-<title>Menu-Time Custom Weekly Menu</title>
-<!-- Page Header-->
-<body>
-    <header class="masthead" style="background-image: url('{{meal.image_url}}')">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h2>{{meal.name}}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+						</div>
+					</div>
 
+				<!-- Sidebar -->
+				{% include 'menu_bar.html' %}
 
-    <table class="table">
-        <tr>
-            <th>Full Recipe & Instructions</th>
-            <th>Description</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td><a href="{{meal.link}}" target="_blank">{{meal.link}}</a></td>
-            <td>{{meal.description}}</td>
-        </tr>
-    </table>
+		<!-- Scripts -->
+			<script src="/static/assets_new/js/jquery.min.js"></script>
+			<script src="/static/assets_new/js/browser.min.js"></script>
+			<script src="/static/assets_new/js/breakpoints.min.js"></script>
+			<script src="/static/assets_new/js/util.js"></script>
+			<script src="/static/assets_new/js/main.js"></script>
 
-    <h2>Shopping List</h2>
-<table class="table">
-    <tr>
-        <th>Produce</th>
-        <th>Refrigerator/Protein</th>
-        <th>Packaged Goods</th>
-        <th>Other</th>
-    </tr>
-    <tr>
-        <td><input type='checkbox'>{{ shopping_list.produce_list | replace(", ", "<br><input type='checkbox'>") | safe }}</td>
-        <td><input type='checkbox'>{{shopping_list.protein_list | replace(", ", "<br><input type='checkbox'>") | safe }}<br>
-            <input type='checkbox'>{{shopping_list.refrigerator_list | replace(", ", "<br><input type='checkbox'>") | safe }}</td>
-        <td><input type='checkbox'>{{shopping_list.dressing_list | replace(", ", "<br><input type='checkbox'>") | safe }}<br>
-        <input type='checkbox'>{{shopping_list.dry_goods_list | replace(", ", "<br><input type='checkbox'>") | safe }}<br>
-        <input type='checkbox'>{{shopping_list.spices_list | replace(", ", "<br><input type='checkbox'>") | safe }}</td>
-        <td><input type='checkbox'>{{shopping_list.other_list | replace(", ", "<br><input type='checkbox'>") | safe }}</td>
-    </tr>
-</table>
-
-</body>
-<hr>
-{% include "footer.html" %}
+	</body>
+</html>

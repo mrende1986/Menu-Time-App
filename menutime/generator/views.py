@@ -5,6 +5,7 @@ from menutime.generator.engine import meal_selector, populate_shopping_list
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 import os
+from datetime import datetime
 
 generator = Blueprint('generator',__name__)
 
@@ -66,6 +67,7 @@ def menu():
             return render_template('menu.html', meals=meals_dict, shopping_list=shopping_list)
 
         except AttributeError:
+
             return redirect(url_for('generator.selections'))
 
 

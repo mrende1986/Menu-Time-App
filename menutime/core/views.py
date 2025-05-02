@@ -8,10 +8,10 @@ import base64
 
 core = Blueprint('core',__name__)
 
-@core.route('/')
+@core.route('/mtindex')
 def index():
 
-    return render_template('index.html')
+    return render_template('mtindex_new.html')
 
 
 @core.route('/customdetails')

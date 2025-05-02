@@ -89,8 +89,9 @@ class Query:
 
         results = []
         for selection in selections:
-            for num in selection['meal_ids_returned']:
-                results.append(num)
+            if 'meal_ids_returned' in selection:
+                for num in selection['meal_ids_returned']:
+                    results.append(num)
 
         meal_ids_counter = Counter(results)
 
@@ -144,10 +145,17 @@ class Query:
         selections_query = db.collection("selections")
         selections = [selection.to_dict() for selection in selections_query.stream()]
 
-        result = [sum(x) for x in zip(*[selection['meal_selections'] for selection in selections])]
-        types = ['Fish', 'Chicken', 'Beef', 'Salad', 'Taco', 'Vegetarian']
+        # Filter out any selections that don't have meal_selections
+        valid_selections = [selection for selection in selections if 'meal_selections' in selection]
 
-        meal_types_results = {type: result for type, result in zip(types, result)}
+        if valid_selections:
+            result = [sum(x) for x in zip(*[selection['meal_selections'] for selection in valid_selections])]
+            types = ['Fish', 'Chicken', 'Beef', 'Salad', 'Taco', 'Vegetarian']
+            meal_types_results = {type: count for type, count in zip(types, result)}
+        else:
+            # Provide default values if no valid selections found
+            types = ['Fish', 'Chicken', 'Beef', 'Salad', 'Taco', 'Vegetarian']
+            meal_types_results = {type: 0 for type in types}
 
         fig, ax = plt.subplots(figsize=(10, 6))
         bars = ax.bar(meal_types_results.keys(), meal_types_results.values(), color=plt.get_cmap('Pastel2').colors)

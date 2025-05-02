@@ -1,39 +1,166 @@
-{% include "header.html" %}
-<style>
-  body {
-    background-color: gray;
-  }
-</style>
-<!-- Page Header-->
-<header class="masthead" style="background-image: url('static/assets/img/brooke-lark-oaz0raysASk-unsplash.jpeg')">
-  <div class="container position-relative px-4 px-lg-5">
-      <div class="row gx-4 gx-lg-5 justify-content-center">
-          <div class="col-md-10 col-lg-8 col-xl-7">
-              <div class="site-heading">
-                  <h2>Why Sign Up?</h2>
-              </div>
-          </div>
-      </div>
-  </div>
-</header>
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Menu Time</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets_new/css/main.css" />
+	</head>
+	<body class="is-preload">
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-      <h1>Custom Menu</h1>
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
 
-	  <table class="table">
+							<!-- Header -->
+								{% include 'header_new.html' %}
 
-        <p>We realize that not everyone has the same diet. We have a custom
-          meal generator that allows you to choose according to your diet.
-        </p>
-        <img src="static/assets/img/custom.png" height="533px" width="1143px"><br>
-        <p>In order to use this funcationality you must sign up and choose Build New Menu.
-          Menu-Time will retain your selections until you make a new selection. 
-        </p>
-        <p><a href="{{ url_for('core.index') }}">Return to homepage</a></p>
-  
-    </div>
-  </div>
-</div>
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h1>Learn more about Menu-Time!</h1>
+											<p>Why Sign Up?</p>
+										</header>
+										<p style="font-size: larger">We realize that not everyone has the same diet. We have a custom
+                      meal generator that allows you to choose according to your diet.<br>
+                    <br>
+                    In order to use this funcationality you must sign up and choose Build New Menu.
+                    Menu-Time will retain your selections until you make a new selection.</p>
+										</br>
+                    <br>
+                    <p></p>
+                    <img src="static/images_new/selector.png" height="533px" width="733px">
+										</br>
+										{% if current_user.is_authenticated: %}
+										<p style="font-size: larger">Want to Build a New Menu?
+										<a class="btn btn-warning btn-lg" href="{{url_for('generator.selections')}}" role="button">Build a New Menu Here!</a></p>
+									</br>
+									</br>
+										<p style="font-size: larger">See your previously created Menu?
+										<a class="btn btn-warning btn-lg" href="{{url_for('generator.menu')}}" role="button">See it Here!</a></p>
+										{% else: %}
+										<p style="font-size: larger">Sign Up/Sign in here:
+										<a class="btn btn-warning btn-lg" href="{{url_for('users.login')}}" role="button">Sign Up/In!</a></p>
+										{% endif %}
+									</div>
+								</section>
+
+							<!-- Section -->
+								<!-- <section>
+									<header class="major">
+										<h2>Erat lacinia</h2>
+									</header>
+									<div class="features">
+										<article>
+											<span class="icon fa-gem"></span>
+											<div class="content">
+												<h3>Portitor ullamcorper</h3>
+												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-paper-plane"></span>
+											<div class="content">
+												<h3>Sapien veroeros</h3>
+												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-rocket"></span>
+											<div class="content">
+												<h3>Quam lorem ipsum</h3>
+												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											</div>
+										</article>
+										<article>
+											<span class="icon solid fa-signal"></span>
+											<div class="content">
+												<h3>Sed magna finibus</h3>
+												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											</div>
+										</article>
+									</div>
+								</section> -->
+
+							<!-- Section -->
+								<!-- <section>
+									<header class="major">
+										<h2>Ipsum sed dolor</h2>
+									</header>
+									<div class="posts">
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic01.jpg" alt="" /></a>
+											<h3>Interdum aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic02.jpg" alt="" /></a>
+											<h3>Nulla amet dolore</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic03.jpg" alt="" /></a>
+											<h3>Tempus ullamcorper</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic04.jpg" alt="" /></a>
+											<h3>Sed etiam facilis</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic05.jpg" alt="" /></a>
+											<h3>Feugiat lorem aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="static/images_new/pic06.jpg" alt="" /></a>
+											<h3>Amet varius aliquam</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+									</div>
+								</section>-->
+
+						</div>
+					</div> 
+
+				<!-- Sidebar -->
+              {% include 'menu_bar.html' %}
+
+
+		<!-- Scripts -->
+			<script src="static/assets_new/js/jquery.min.js"></script>
+			<script src="static/assets_new/js/browser.min.js"></script>
+			<script src="static/assets_new/js/breakpoints.min.js"></script>
+			<script src="static/assets_new/js/util.js"></script>
+			<script src="static/assets_new/js/main.js"></script>
+
+	</body>
+</html>

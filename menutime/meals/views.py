@@ -31,10 +31,9 @@ def meals():
     ## Firebase ##
     meals = db.collection('meals') 
     all_meals = [doc.to_dict() for doc in meals.stream()]
-    return render_template('meals.html', meal_stack=all_meals)
+    return render_template('meals_new.html', meal_stack=all_meals)
 
 
-# # Removed 5/28/24
 @meal.route("/meal/<int:meal_id>", methods=["GET", "POST"])
 def show_post(meal_id):
     # comment_form = CommentForm()
@@ -44,17 +43,6 @@ def show_post(meal_id):
     id = [meal_id]
 
     shopping_list, menu_names, menu_link, menu_image_url, menu_description = populate_shopping_list(id, requested_meal['servings'])
-    # if comment_form.validate_on_submit():
-    #     if not current_user.is_authenticated:
-    #         flash("You need to login or register to comment.")
-    #         return redirect(url_for("users.login"))
 
-    #     new_comment = Comment(
-    #         text=comment_form.comment_text.data,
-    #         user_id=current_user.id,
-    #         meal_id=meal_id
-    #     )
-    #     db.session.add(new_comment)
-    #     db.session.commit()
 
     return render_template("meal.html", meal=requested_meal, shopping_list=shopping_list)#, form=comment_form, current_user=current_user)
